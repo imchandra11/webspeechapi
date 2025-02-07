@@ -29,6 +29,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import "./App.css"; // Import the CSS file
 
 const VoiceAssistant = () => {
   const [query, setQuery] = useState("");
@@ -55,7 +56,7 @@ const VoiceAssistant = () => {
     setQuery(transcript);
     recognition.stop();
     setListening(false);
-    
+
     // Send the query to the backend
     try {
       const res = await axios.post("https://webspeechbackend.onrender.com/api", { prompt: transcript });
@@ -66,7 +67,6 @@ const VoiceAssistant = () => {
       console.error("Error fetching response:", error);
     }
   };
-
 
   // Handle speech recognition errors
   recognition.onerror = (event) => {
@@ -83,13 +83,13 @@ const VoiceAssistant = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
+    <div className="voice-assistant">
       <h2>Voice Assistant</h2>
-      <button onClick={startListening} disabled={listening}>
+      <button onClick={startListening} disabled={listening} className={`voice-btn ${listening ? "listening" : ""}`}>
         {listening ? "Listening..." : "Speak"}
       </button>
-      <p><strong>Your Query:</strong> {query}</p>
-      <p><strong>Response:</strong> {response}</p>
+      <p className="query"><strong>Your Query:</strong> {query}</p>
+      <p className="response"><strong>Response:</strong> {response}</p>
     </div>
   );
 };
